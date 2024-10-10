@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Layout</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .header {
+            background-color: #6A5ACD; /* Adjust color to match image */
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px; /* Adjust padding to match image */
+        }
+
+        .menu-icon {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            height: 24px; /* Adjust height to match image */
+        }
+
+            .menu-icon div {
+                width: 30px; /* Adjust width to match image */
+                height: 4px; /* Adjust height to match image */
+                background-color: black;
+            }
+
+        .profile {
+            display: flex;
+            align-items: center;
+        }
+
+        .profile-icon {
+            width: 40px; /* Adjust size to match image */
+            height: 40px; /* Adjust size to match image */
+            border-radius: 50%;
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 10px; /* Adjust margin to match image */
+        }
+
+            .profile-icon::before {
+                content: '';
+                width: 60%;
+                height: 60%;
+                background-color: #6A5ACD; /* Same as header bg color */
+                clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="menu-icon">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>*Untitled Document</div>
+        <div class="profile">
+            <div class="profile-icon"></div>
+            <span>Justin Hallet</span>
+        </div>
+    </div>
+
+</body>
+</html>
