@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QML Example</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        gfx {
+            display: block;
+            border: 0px;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gfx"></canvas>
+    <script>
+        window.onload = () => {
+            const gfx = document.getElementById('gfx');
+            if (gfx) {
+                console.log('Found gfx!')
+            }
+
+            const ctx = gfx.getContext('2d');
+            if (ctx) {
+                console.log('Found 2D context!');
+            }
+
+            const ws = new WebSocket('ws://localhost:12345');
+            ws.binaryType = 'arraybuffer';
+
+            ws.onopen = () => {
+                console.log('Connected to server');
+            };
+
+            ws.onmessage = (event) => {
+                const blob = new Blob([event.data], { type: 'image/png' });
+                const img = new Image();
+                img.onload = () => {
+                    gfx.width = img.width;
+                    gfx.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+                };
+                img.src = URL.createObjectURL(blob);
+            };
+
+            ws.onopen = () => {
+                console.log('Connected to server');
+                const mouseEvent = (event) => {
+                    const msg = {
+                        type: 'mouse',
+                        event: event.type,
+                        buttons: event.buttons,
+                        x: event.clientX,
+                        y: event.clientY
+                    };
+                    ws.send(JSON.stringify(msg));
+                };
+
+                gfx.addEventListener('mousemove', mouseEvent);
+                gfx.addEventListener('mousedown', mouseEvent);
+                gfx.addEventListener('mouseup', mouseEvent);
+                gfx.addEventListener('mouseenter', mouseEvent);
+                gfx.addEventListener('mouseleave', mouseEvent);
+
+                const animate = () => {
+                    const msg = {
+                        type: 'image',
+                        width: window.innerWidth,
+                        height: window.innerHeight
+                    };
+                    ws.send(JSON.stringify(msg));
+                };
+                setInterval(animate, 1000/30);
+
+            };
+
+        };
+    </script>
+</body>
+</html>
