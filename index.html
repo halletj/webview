@@ -35,10 +35,6 @@
             const ws = new WebSocket('ws://localhost:12345');
             ws.binaryType = 'arraybuffer';
 
-            ws.onopen = () => {
-                console.log('Connected to server');
-            };
-
             ws.onmessage = (event) => {
                 const blob = new Blob([event.data], { type: 'image/png' });
                 const img = new Image();
