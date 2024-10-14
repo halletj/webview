@@ -95,6 +95,16 @@
             const ws = new WebSocket('ws://localhost:12345');
             ws.binaryType = 'arraybuffer';
 
+            const animate = () => {
+                const msg = {
+                    type: 'image',
+                    width: window.innerWidth,
+                    height: window.innerHeight
+                };
+                ws.send(JSON.stringify(msg));
+            };
+
+
             ws.onmessage = (event) => {
                 const blob = new Blob([event.data], { type: 'image/png' });
                 const img = new Image();
@@ -102,6 +112,7 @@
                     gfx.width = img.width;
                     gfx.height = img.height;
                     ctx.drawImage(img, 0, 0);
+                    animate();
                 };
                 img.src = URL.createObjectURL(blob);
             };
@@ -125,16 +136,7 @@
                 gfx.addEventListener('mouseenter', mouseEvent);
                 gfx.addEventListener('mouseleave', mouseEvent);
 
-                const animate = () => {
-                    const msg = {
-                        type: 'image',
-                        width: window.innerWidth,
-                        height: window.innerHeight
-                    };
-                    ws.send(JSON.stringify(msg));
-                };
-                setInterval(animate, 1000 / 30);
-
+                animate();
             };
 
         };
